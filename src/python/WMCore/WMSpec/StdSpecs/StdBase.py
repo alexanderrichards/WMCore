@@ -77,7 +77,6 @@ class StdBase(object):
         # Definition of parameters that depend on the value of others
         if hasattr(self, "multicore") and self.multicore:
             self.multicore = True
-            self.multicoreNCores = self.multicore
 
         return
 
@@ -885,8 +884,9 @@ class StdBase(object):
                      "EnableHarvesting" : {"default" : False, "type" : strToBool},
                      "EnableNewStageout" : {"default" : False, "type" : strToBool},
                      "IncludeParents" : {"default" : False,  "type" : strToBool},
-                     "Multicore" : {"default" : None, "null" : True,
-                                    "validate" : lambda x : x == "auto" or (int(x) > 0)}}
+                     "Multicore" : {"default" : None, "null" : True},
+                     "MulticoreNCores" : {"default" : None, "null" : True,
+                                          "validate" : lambda x : x == "auto" or (int(x) > 0)}}
 
         # Set defaults for the argument specification
         for arg in arguments:
