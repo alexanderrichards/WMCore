@@ -76,7 +76,9 @@ class EventBased(JobFactory):
                         lumiDict = fileLumis.get(f['id'], {})
                         for run in lumiDict.keys():
                             f.addRun(run = Run(run, *lumiDict[run]))
-            for f in fileList:
+
+            enum = enumerate(fileList)
+            for i, f in enum:
                 currentEvent = f['first_event']
                 eventsInFile = f['events']
                 runs = list(f['runs'])
@@ -113,8 +115,20 @@ class EventBased(JobFactory):
                     else:
                         self.newJob(name = self.getJobName(length=totalJobs))
                         self.currentJob.addFile(f)
-                        jobTime = eventsInFile * timePerEvent
-                        diskRequired = eventsInFile * sizePerEvent
+                        total_events = eventsInFile
+                        while len(filelist) > (i + 1) and  and eventsInFile + filelist[i+1]['events'] <= eventsPerJob:
+                            if not filelist[i+1]['lfn'].startswith("MCFakeFile"):
+                                i, f = next(enum)
+                                f['runs'] = set()
+                                if getParents:
+                                    parentLFNs = self.findParent(lfn = f['lfn'])
+                                    for lfn in parentLFNs:
+                                        parent = File(lfn = lfn)
+                                        f['parents'].add(parent)
+                                self.currentJob.addFile(f)
+                                total_events +=f['events']
+                        jobTime = total_events * timePerEvent
+                        diskRequired = total_events * sizePerEvent
                         self.currentJob.addResourceEstimates(jobTime = jobTime,
                                                              memory = memoryRequirement,
                                                              disk = diskRequired)
