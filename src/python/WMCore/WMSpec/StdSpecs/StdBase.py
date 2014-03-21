@@ -52,7 +52,6 @@ class StdBase(object):
 
         # Internal parameters
         self.workloadName = None
-        self.multicoreNCores = None
 
         return
 
@@ -885,8 +884,8 @@ class StdBase(object):
                      "EnableNewStageout" : {"default" : False, "type" : strToBool},
                      "IncludeParents" : {"default" : False,  "type" : strToBool},
                      "Multicore" : {"default" : None, "null" : True},
-                     "MulticoreNCores" : {"default" : None, "null" : True,
-                                          "validate" : lambda x : x == "auto" or (int(x) > 0)}}
+                     "MulticoreNCores" : {"default" : 1, "null" : False, "type" : int,
+                                          "validate" : lambda x : (int(x) > 0)}}
 
         # Set defaults for the argument specification
         for arg in arguments:
