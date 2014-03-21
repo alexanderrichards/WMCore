@@ -880,7 +880,7 @@ class StdBase(object):
                      "EnableNewStageout" : {"default" : False, "type" : strToBool},
                      "IncludeParents" : {"default" : False,  "type" : strToBool},
                      "Multicore" : {"default" : True, "type" : strToBool},
-                     "MulticoreNCores" : {"default" : 1, "null" : False, "type" : int,
+                     "MulticoreNCores" : {"default" : 1, "type" : int,
                                           "validate" : lambda x : int(x) > 0}}
 
         # Set defaults for the argument specification
