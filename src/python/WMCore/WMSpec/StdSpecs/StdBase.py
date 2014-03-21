@@ -73,10 +73,6 @@ class StdBase(object):
             elif argumentDefinition[arg]["optional"]:
                 setattr(self, argumentDefinition[arg]["attr"], argumentDefinition[arg]["default"])
 
-        # Definition of parameters that depend on the value of others
-        if hasattr(self, "multicore") and self.multicore:
-            self.multicore = True
-
         return
 
     def determineOutputModules(self, scenarioFunc = None, scenarioArgs = None,
@@ -885,7 +881,7 @@ class StdBase(object):
                      "IncludeParents" : {"default" : False,  "type" : strToBool},
                      "Multicore" : {"default" : None, "null" : True},
                      "MulticoreNCores" : {"default" : 1, "null" : False, "type" : int,
-                                          "validate" : lambda x : (int(x) > 0)}}
+                                          "validate" : lambda x : int(x) > 0}}
 
         # Set defaults for the argument specification
         for arg in arguments:
