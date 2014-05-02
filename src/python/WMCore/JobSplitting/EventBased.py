@@ -116,7 +116,7 @@ class EventBased(JobFactory):
                         self.newJob(name = self.getJobName(length=totalJobs))
                         self.currentJob.addFile(f)
                         total_events = eventsInFile
-                        while len(filelist) > (i + 1) and  and eventsInFile + filelist[i+1]['events'] <= eventsPerJob:
+                        while len(filelist) > (i + 1) and eventsInFile + filelist[i+1]['events'] <= eventsPerJob:
                             if not filelist[i+1]['lfn'].startswith("MCFakeFile"):
                                 i, f = next(enum)
                                 f['runs'] = set()
