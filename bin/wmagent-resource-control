@@ -106,13 +106,13 @@ def getCMSSiteInfo(pattern):
     print "Querying SiteDB for site information..."
 
     siteDB = SiteDBJSON()
-    for seName in siteDB.cmsNametoList(pattern, "SE", "result.json"):
-        cmsNames = siteDB.seToCMSName(seName)
+    for pnn in siteDB.cmsNametoPhEDExNode(pattern):
+        cmsNames = siteDB.PNNtoPSN(pnn)
         for cmsName in cmsNames:
             if cmsName in nameSEMapping:
-                nameSEMapping[cmsName].append(seName)
+                nameSEMapping[cmsName].append(pnn)
             else:
-                nameSEMapping[cmsName] = [seName]
+                nameSEMapping[cmsName] = [pnn]
 
     if options.addDisk:
         nameSEMapping = dict((k, list(set(v))) for k, v in nameSEMapping.iteritems()
