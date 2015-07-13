@@ -149,12 +149,15 @@ class DataLocationMapper():
                     phedexNodeNames = dbs.listFileBlockLocation(item, dbsOnly = True)
                 for pnn in phedexNodeNames:
                     result[item].update(pnn)
-            except Exception, ex:
+            except Exception as ex:
                 logging.error('Error getting block location from dbs for %s: %s' % (item, str(ex)))
 
         # convert the sets to lists
         for name, nodes in result.items():
-            result[name] = list(nodes)
+            psns = set()
+            for x in nodes:
+                psns.update(self.sitedb.PNNtoPSN(x))
+            result[name] = list(psns)
 
         return result, True # partial dbs updates not supported
 

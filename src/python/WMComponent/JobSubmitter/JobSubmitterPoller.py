@@ -315,11 +315,11 @@ class JobSubmitterPoller(BaseWorkerThread):
                 possibleLocations = set()
 
                 # all files in job have same location (in se names)
-                #rawLocations = loadedJob["input_files"][0]["locations"]
+                rawLocations = loadedJob["input_files"][0]["locations"]
                 #rawLocations = loadedJob.get("inputDatasetLocations") or []
                 #possibleLocations.update(rawLocations)
                 from pprint import pformat
-                rawLocations = loadedJob.get("inputDatasetLocations") or []
+                #rawLocations = loadedJob.get("inputDatasetLocations") or []
                 logging.warning("ALEX_JobSubmitter3.1: loadedJob= %s" % pformat(loadedJob))
                 logging.warning("ALEX_JobSubmitter3.2: rawLocations= %s" % rawLocations)
                 logging.warning("ALEX_JobSubmitter3.3: rawlocations(input_files)= %s" % loadedJob["input_files"][0]["locations"])
@@ -536,11 +536,11 @@ class JobSubmitterPoller(BaseWorkerThread):
             if state in ["Down", "Aborted"]:
                 newAbortSites.add(siteName)
 
-            for seName in rcThresholds[siteName]["se_names"]:
-                if not seName in self.siteKeys.keys():
-                    self.siteKeys[seName] = []
-                if not siteName in self.siteKeys[seName]:
-                    self.siteKeys[seName].append(siteName)
+            for pnn in rcThresholds[siteName]["pnns"]:
+                if not pnn in self.siteKeys.keys():
+                    self.siteKeys[pnn] = []
+                if not siteName in self.siteKeys[pnn]:
+                    self.siteKeys[pnn].append(siteName)
 
         # When the list of drain/abort sites changes between iteration then a location
         # refresh is needed, for now it forces a full cache refresh
