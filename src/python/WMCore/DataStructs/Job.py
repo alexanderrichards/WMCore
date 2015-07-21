@@ -18,7 +18,6 @@ from WMCore.Configuration import ConfigSection
 
 from WMCore.Services.UUID import makeUUID
 
-import logging
 import time
 
 
@@ -36,7 +35,6 @@ class Job(WMObject, dict):
         else:
             self["input_files"] = files
 
-        logging.warning("ALEX DataStructs.Job1: input_files= %s" % self["input_files"])
         self["id"] = None
         self["jobgroup"] = None
         self["name"] = name
@@ -108,7 +106,6 @@ class Job(WMObject, dict):
             self["input_files"].extend(file)
         else:
             self["input_files"].append(file)
-        logging.warning("ALEX DataStructs.Job2: input_files= %s" % self["input_files"])
 
         return
 

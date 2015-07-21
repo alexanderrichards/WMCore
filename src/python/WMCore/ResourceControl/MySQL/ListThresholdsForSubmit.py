@@ -75,10 +75,6 @@ class ListThresholdsForSubmit(DBFormatter):
                 mappedPNNs[pnn['site_name']] = []
             mappedPNNs[pnn['site_name']].append(pnn['pnn'])
 
-        from pprint import pformat
-        import logging
-        logging.warning("ALEX ListThresholdForSubmit1: %s"% pformat(mappedPNNs))
-        logging.warning("ALEX ListThresholdForSubmit2: %s" % pformat([r['site_name'] for r in results]))
         formattedResults = {}
         for result in results:
             siteName = result['site_name']

@@ -5,7 +5,6 @@ _DBSReader_
 Readonly DBS Interface
 
 """
-import logging
 from collections import defaultdict
 from dbs.apis.dbsClient import DbsApi
 from dbs.exceptions.dbsClientException import *
@@ -602,9 +601,6 @@ class DBS3Reader:
                 if valid_nodes:  # dont add if only 'UNKNOWN' or None
                     locations[name] = list(valid_nodes)
 
-        ## DEBUG ONLY, REMOVE BEFORE COMMITING
-        if dbsOnly:
-            logging.warning("ALEX DBS3Reader2: dbsOnly=%s, locations=%s" % (dbsOnly, locations))
 
         #returning single list if a single block is passed
         if singleBlockName is not None:
@@ -754,7 +750,7 @@ class DBS3Reader:
         if not dbsOnly:
             try:
                 blocksInfo = self.phedex.getReplicaPhEDExNodesForBlocks(dataset=[datasetName],complete='y')
-            except Exception, ex:
+            except Exception as ex:
                 msg = "Error while getting block location from PhEDEx for dataset=%s)\n" % datasetName
                 msg += "%s\n" % str(ex)
                 raise Exception(msg)
@@ -762,7 +758,6 @@ class DBS3Reader:
             if not blocksInfo: # if we couldnt get data location from PhEDEx, try to look into origin site location from dbs
                 dbsOnly = True
             else:
-                logging.warning("ALEX DBS3Reader1: %s" % blocksInfo.values())
                 for blockSites in blocksInfo.values():
                     locations.update(blockSites)
 
@@ -777,7 +772,6 @@ class DBS3Reader:
             if not blocksInfo: # no data location from dbs
                 return list()
 
-            logging.warning("ALEX DBS3Reader2: %s" % [b['origin_site_name'] for b in blocksInfo])
             for blockInfo in blocksInfo:
                 locations.update([blockInfo['origin_site_name']])
 

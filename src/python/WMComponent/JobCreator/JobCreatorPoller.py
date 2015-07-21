@@ -166,8 +166,6 @@ def creatorProcess(work, jobCacheDir):
         numberOfCores = work.get('numberOfCores', 1)
         inputDataset = work.get('inputDataset', None)
         inputDatasetLocations = work.get('inputDatasetLocations', None)
-        logging.warning("ALEX JobCreator 5: inputDataset %s" % inputDataset)
-        logging.warning("ALEX JobCreator 6: inputDatasetLocations %s" % inputDatasetLocations)
 
         if ownerDN == None:
             ownerDN = owner
@@ -564,8 +562,6 @@ class JobCreatorPoller(BaseWorkerThread):
                     dbs = DBSReader(dbsurl)
                     inputDataset = wmTask.getInputDatasetPath()
                     locations = dbs.listDatasetLocation(inputDataset)
-                logging.warning("ALEX JobCreator1: inputDataset= %s" % inputDataset)
-                logging.warning("ALEX JobCreator2: locations= %s" % locations)
                 processDict = {'workflow': workflow,
                                'wmWorkload': wmWorkload, 'wmTaskName': wmTask.getPathName(),
                                'jobNumber': jobNumber, 'sandbox': wmTask.data.input.sandbox,

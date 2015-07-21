@@ -27,6 +27,7 @@ from WMCore.DataStructs.JobPackage            import JobPackage
 from WMCore.FwkJobReport.Report               import Report
 from WMCore.WMException                       import WMException
 from WMCore.BossAir.BossAirAPI                import BossAirAPI
+from WMCore.Services.SiteDB.SiteDB            import SiteDBJSON as SiteDB
 
 def siteListCompare(a, b):
     """
@@ -294,7 +295,6 @@ class JobSubmitterPoller(BaseWorkerThread):
             siteWhitelist = loadedJob.get("siteWhitelist", [])
             siteBlacklist = loadedJob.get("siteBlacklist", [])
             trustSitelists = loadedJob.get("trustSitelists", False)
-            logging.warning("ALEX_JobSubmitter1: siteWhitelist= %s" % siteWhitelist)
             # convert site lists into correct format
             if len(siteWhitelist) > 0:
                 whitelist = []
@@ -307,7 +307,6 @@ class JobSubmitterPoller(BaseWorkerThread):
                     blacklist.extend(self.cmsNames.get(cmsName, []))
                 siteBlacklist = blacklist
 
-            logging.warning("ALEX_JobSubmitter2: siteWhitelist= %s" % siteWhitelist)
             # figure out possible locations for job
             if trustSitelists:
                 possibleLocations = set(siteWhitelist) - set(siteBlacklist)
@@ -316,16 +315,7 @@ class JobSubmitterPoller(BaseWorkerThread):
 
                 # all files in job have same location (in se names)
                 rawLocations = loadedJob["input_files"][0]["locations"]
-                #rawLocations = loadedJob.get("inputDatasetLocations") or []
-                #possibleLocations.update(rawLocations)
-                from pprint import pformat
-                #rawLocations = loadedJob.get("inputDatasetLocations") or []
-                logging.warning("ALEX_JobSubmitter3.1: loadedJob= %s" % pformat(loadedJob))
-                logging.warning("ALEX_JobSubmitter3.2: rawLocations= %s" % rawLocations)
-                logging.warning("ALEX_JobSubmitter3.3: rawlocations(input_files)= %s" % loadedJob["input_files"][0]["locations"])
-                logging.warning("ALEX_JobSubmitter3.5: rawlocations(inputDatasetLocations)= %s" % loadedJob.get("inputDatasetLocations", []))
                 
-                from WMCore.Services.SiteDB.SiteDB import SiteDBJSON as SiteDB
                 sitedb = SiteDB()
  #               sitedb_names = set()
                 for l in rawLocations:
@@ -333,11 +323,9 @@ class JobSubmitterPoller(BaseWorkerThread):
                     possibleLocations.update(sitedb.PNNtoPSN(l) or [])
 #                    if l in self.cmsNames:
 #                        possibleLocations.update(self.cmsNames.get(l))
-#                logging.warning("ALEX_JobSubmitter3.9: sitedb_names= %s" % pformat(sitedb_names))
 
 
                 # transform se names into site names
-#                logging.warning("ALEX_JobSubmitter4: self.siteKeys= %s" % self.siteKeys.keys())
 #                for loc in rawLocations:
 #                    if not loc in self.siteKeys.keys():
 #                        # Then we have a problem
@@ -352,7 +340,6 @@ class JobSubmitterPoller(BaseWorkerThread):
                     possibleLocations = possibleLocations & set(siteWhitelist)
                 if len(siteBlacklist) > 0:
                     possibleLocations = possibleLocations - set(siteBlacklist)
-                logging.warning("ALEX_JobSubmitter5: possibleLocations= %s" % possibleLocations)
 
             # Create another set of locations that may change when a site goes white/black listed
             # Does not care about the non_draining or aborted sites, they may change and that is the point
