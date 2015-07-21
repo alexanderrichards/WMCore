@@ -570,7 +570,7 @@ class DBS3Reader:
         if not dbsOnly:
             try:
                 blocksInfo = self.phedex.getReplicaPhEDExNodesForBlocks(block=fileBlockNames, complete='y')
-            except Exception, ex:
+            except Exception as ex:
                 msg = "Error while getting block location from PhEDEx for block_name=%s)\n" % fileBlockName
                 msg += "%s\n" % str(ex)
                 raise Exception(msg)
@@ -589,7 +589,7 @@ class DBS3Reader:
             try:
                 for block in fileBlockNames:
                     blocksInfo.update( dict(((block, blockInfo[0]['origin_site_name']) for blockInfo in self.dbs.listBlockOrigin(block_name = block) if blockInfo)) )
-            except dbsClientException, ex:
+            except dbsClientException as ex:
                 msg = "Error in DBS3Reader: self.dbs.listBlockOrigin(block_name=%s)\n" % fileBlockNames
                 msg += "%s\n" % formatEx3(ex)
                 raise DBSReaderError(msg)
